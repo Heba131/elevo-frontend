@@ -14,7 +14,7 @@ const RegisterPage = () => {
     e.preventDefault();
     try {
       // إرسال طلب POST للباك إند
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
+      const response = await axios.post('https://elevo-backend.onrender.com', {
         username: fullName, 
         email: email,
         password: password
