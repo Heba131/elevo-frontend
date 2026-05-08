@@ -42,7 +42,7 @@ const MainPage = () => {
     <main className="container">
       <h1 className="page-title">Tech Store</h1>
       
-      <div className="filters-container" style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
+      <div>
         <input 
           type="text" 
           placeholder="Search products..." 
