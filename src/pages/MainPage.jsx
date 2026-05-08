@@ -12,7 +12,7 @@ const MainPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('https://elevo-backend.onrender.com');
+       const response = await axios.get('https://elevo-backend.onrender.com/api/products');
         setProducts(response.data);
         setLoading(false);
       } catch (error) {

@@ -11,7 +11,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       // إرسال الطلب للباك إند
-      const response = await axios.post('https://elevo-backend.onrender.com', { 
+   const response = await axios.post('https://elevo-backend.onrender.com/api/auth/login', { 
         email: email, 
         password: password 
       });
