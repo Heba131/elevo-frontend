@@ -26,10 +26,14 @@ const MainPage = () => {
 
   // 3. الفلترة والترتيب (تستخدم الآن مصفوفة products القادمة من السيرفر)
   const filtered = products
-    .filter(item => 
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      item.category.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+.filter(item => {
+    // التأكد من أن المنتج والاسم والفئة موجودون فعلياً قبل البحث
+    const name = item.name ? item.name.toLowerCase() : "";
+    const category = item.category ? item.category.toLowerCase() : "";
+    const search = searchTerm.toLowerCase();
+    
+    return name.includes(search) || category.includes(search);
+  })
     .sort((a, b) => {
       if (sortOrder === 'low') return a.price - b.price;
       if (sortOrder === 'high') return b.price - a.price;
