@@ -60,7 +60,7 @@ const MainPage = () => {
     
 <div style={{ 
   display: 'flex', 
-  gap: '15px', 
+  gap: '25px', 
   marginBottom: '20px', 
   alignItems: 'center',
   flexWrap: 'wrap'
@@ -98,7 +98,7 @@ const MainPage = () => {
               <p className="product-price">${item.price}</p>
               
             
-              <div style={{ display: 'flex', gap: '20px', marginTop: '10px' }}>
+              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                 <button className="btn">View Details</button>
                 
            
