@@ -1,82 +1,62 @@
-import React, { useState, useEffect } from 'react'; // أضفنا useEffect
-import axios from 'axios'; // أضفنا axios لجلب البيانات
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const MainPage = () => {
-  // 1. تعريف الـ State للمنتجات كصفوفة فارغة في البداية
   const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortOrder, setSortOrder] = useState('none');
-  const [loading, setLoading] = useState(true); // اختيارياً: لإظهار رسالة تحميل
+  const [loading, setLoading] = useState(true);
 
-  // 2. جلب البيانات من الـ Backend عند فتح الصفحة
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-       const response = await axios.get('https://elevo-backend.onrender.com/api/products');
-        setProducts(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("خطأ في جلب المنتجات:", error);
-        setLoading(false);
-      }
-    };
-
     fetchProducts();
   }, []);
 
-  // 3. الفلترة والترتيب (تستخدم الآن مصفوفة products القادمة من السيرفر)
-  const filtered = products
-.filter(item => {
-    // التأكد من أن المنتج والاسم والفئة موجودون فعلياً قبل البحث
-    const name = item.name ? item.name.toLowerCase() : "";
-    const category = item.category ? item.category.toLowerCase() : "";
-    const search = searchTerm.toLowerCase();
-    
-    return name.includes(search) || category.includes(search);
-  })
-    .sort((a, b) => {
-      if (sortOrder === 'low') return a.price - b.price;
-      if (sortOrder === 'high') return b.price - a.price;
-      return 0;
-    });
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get('https://elevo-backend.onrender.com/api/products');
+      setProducts(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setLoading(false);
+    }
+  };
 
-  if (loading) return <div className="container"><h2>Loading Products...</h2></div>;
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
+    
+    try {
+      const response = await axios.delete(`https://elevo-backend.onrender.com/api/products/${id}`);
+      alert(response.data.message);
+      fetchProducts();
+    } catch (error) {
+      alert("❌ " + (error.response?.data?.message || "Delete failed"));
+    }
+  };
+
+  if (loading) return <div className="container"><h2>Loading...</h2></div>;
 
   return (
     <main className="container">
       <h1 className="page-title">Tech Store</h1>
-      
-      <div>
-        <input 
-          type="text" 
-          placeholder="Search products..." 
-          onChange={(e) => setSearchTerm(e.target.value)} 
-          style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ddd', flex: 1 }}
-        />
-        <select 
-          onChange={(e) => setSortOrder(e.target.value)}
-          style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
-        >
-          <option value="none">Sort By Price</option>
-          <option value="low">Price: Low to High</option>
-          <option value="high">Price: High to Low</option>
-        </select>
-      </div>
-
       <div className="product-grid">
-        {filtered.length > 0 ? (
-          filtered.map(item => (
-            <div key={item._id} className="product-card"> {/* استخدمنا _id لأن MongoDB تنشئه هكذا */}
-              <img src={item.image} alt={item.name} className="product-img" />
-              <h3>{item.name}</h3>
-              <p>{item.category}</p>
-              <p className="product-price">${item.price}</p>
-              <button className="btn">View Details</button>
+        {products.map(item => (
+          <div key={item._id} className="product-card">
+            <img src={item.image} alt={item.name} className="product-img" />
+            <h3>{item.name}</h3>
+            <p className="product-price">${item.price}</p>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+               <button className="btn">Details</button>
+           
+               <button 
+                  className="btn" 
+                  style={{ backgroundColor: '#ff4d4d' }} 
+                  onClick={() => handleDelete(item._id)}
+               >
+                 Delete
+               </button>
             </div>
-          ))
-        ) : (
-          <p>No products found.</p>
-        )}
+          </div>
+        ))}
       </div>
     </main>
   );

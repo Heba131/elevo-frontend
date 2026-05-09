@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png.png'; 
+
 const Header = () => {
   return (
     <header className="main-header">
@@ -8,10 +9,11 @@ const Header = () => {
         <h2 style={{ color: 'white', margin: 0 }}>ELEVO</h2>
       </div>
       <ul className="nav-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/about">About</Link></li>
-        <li><Link to="/login">Login</Link></li>
-        <li><Link to="/register">Register</Link></li>
+        <li><Link to=\"/\">Home</Link></li>
+        <li><Link to=\"/add-product\">Add Product</Link></li>
+        <li><Link to=\"/about\">About</Link></li>
+        <li><Link to=\"/login\">Login</Link></li>
+        <li><Link to=\"/register\">Register</Link></li>
       </ul>
     </header>
   );
