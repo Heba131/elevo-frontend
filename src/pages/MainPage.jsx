@@ -5,6 +5,9 @@ const MainPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+ 
+  const user = JSON.parse(localStorage.getItem('user'));
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -20,14 +23,12 @@ const MainPage = () => {
     }
   };
 
-
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
-    
+    if (!window.confirm("Are you sure?")) return;
     try {
       const response = await axios.delete(`https://elevo-backend.onrender.com/api/products/${id}`);
       alert(response.data.message);
-      fetchProducts();
+      fetchProducts(); 
     } catch (error) {
       alert("❌ " + (error.response?.data?.message || "Delete failed"));
     }
@@ -44,16 +45,20 @@ const MainPage = () => {
             <img src={item.image} alt={item.name} className="product-img" />
             <h3>{item.name}</h3>
             <p className="product-price">${item.price}</p>
+            
             <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
                <button className="btn">Details</button>
-           
-               <button 
-                  className="btn" 
-                  style={{ backgroundColor: '#ff4d4d' }} 
-                  onClick={() => handleDelete(item._id)}
-               >
-                 Delete
-               </button>
+               
+              
+               {user && item.createdBy && (user.id === item.createdBy._id || user.id === item.createdBy) && (
+                 <button 
+                    className="btn" 
+                    style={{ backgroundColor: '#ff4d4d' }} 
+                    onClick={() => handleDelete(item._id)}
+                 >
+                   Delete
+                 </button>
+               )}
             </div>
           </div>
         ))}

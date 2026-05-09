@@ -7,7 +7,7 @@ const AddProduct = () => {
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('Phones');
   const [image, setImage] = useState('');
-  const [description, setDescription] = useState('');
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,7 +19,6 @@ const AddProduct = () => {
         price: Number(price),
         category,
         image,
-        description
       });
 
       alert("✅ Product Added Successfully!");
@@ -67,12 +66,6 @@ const AddProduct = () => {
             value={image} 
             onChange={(e) => setImage(e.target.value)} 
             required 
-          />
-          <textarea 
-            placeholder="Short Description" 
-            value={description} 
-            onChange={(e) => setDescription(e.target.value)}
-            style={{ width: '100%', padding: '10px', borderRadius: '5px', backgroundColor: '#1a1f29', color: 'white', border: '1px solid #2d3748', minHeight: '80px', marginBottom: '15px' }}
           />
           <button type="submit" className="btn">Post Product</button>
         </form>
