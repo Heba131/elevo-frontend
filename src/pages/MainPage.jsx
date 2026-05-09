@@ -57,22 +57,36 @@ const MainPage = () => {
     <main className="container">
       <h1 className="page-title">Tech Store</h1>
       
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-        <input 
-          type="text" 
-          placeholder="Search products..." 
-          onChange={(e) => setSearchTerm(e.target.value)} 
-          style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ddd', flex: 1 }}
-        />
-        <select 
-          onChange={(e) => setSortOrder(e.target.value)}
-          style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
-        >
-          <option value="none">Sort By Price</option>
-          <option value="low">Price: Low to High</option>
-          <option value="high">Price: High to Low</option>
-        </select>
-      </div>
+    
+<div style={{ 
+  display: 'flex', 
+  gap: '15px', 
+  marginBottom: '20px', 
+  alignItems: 'center',
+  flexWrap: 'wrap'
+}}>
+  
+
+  <div style={{ flex: 2, minWidth: '200px' }}>
+    <input 
+      type="text" 
+      placeholder="Search by name or category..." 
+      onChange={(e) => setSearchTerm(e.target.value)} 
+      style={{ width: '100%', margin: 0 }}
+    />
+  </div>
+
+  <div style={{ flex: 1, minWidth: '150px' }}>
+    <select 
+      onChange={(e) => setSortOrder(e.target.value)}
+      style={{ width: '100%', margin: 0 }} 
+    >
+      <option value="none">Sort By Price</option>
+      <option value="low">Price: Low to High</option>
+      <option value="high">Price: High to Low</option>
+    </select>
+  </div>
+</div>
 
       <div className="product-grid">
         {filtered.length > 0 ? (
