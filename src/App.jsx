@@ -12,13 +12,14 @@ function App() {
     <Router>
       <Header /> 
       <Routes>
-        <Route path=\"/\" element={<MainPage />} />
-        <Route path=\"/about\" element={<AboutPage />} />
-        <Route path=\"/login\" element={<LoginPage />} />
-        <Route path=\"/register\" element={<RegisterPage />} />
-        <Route path=\"/add-product\" element={<AddProduct />} /> 
+        <Route path="/" element={<MainPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/add-product" element={<AddProduct />} />
       </Routes>
     </Router>
   );
 }
+
 export default App;
