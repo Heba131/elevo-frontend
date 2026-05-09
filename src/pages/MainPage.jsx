@@ -64,8 +64,8 @@ const MainPage = () => {
     <main className="container">
       <h1 className="page-title">Tech Store</h1>
 
-      {/* --- Search & Sort Controls --- */}
-      <div style={{ display: 'flex', gap: '15px', marginBottom: '25px', flexWrap: 'wrap' }}>
+     
+      <div>
         <input 
           type="text" 
           placeholder="Search products..." 
@@ -74,8 +74,6 @@ const MainPage = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <select 
-          className="form-control" 
-          style={{ width: '200px', padding: '10px' }}
           onChange={(e) => setSortOrder(e.target.value)}
         >
           <option value="none">Sort by Price</option>
@@ -93,13 +91,13 @@ const MainPage = () => {
               <img src={item.image} alt={item.name} className="product-img" />
               <div className="product-info">
                 <h3>{item.name}</h3>
-                <p className="product-category" style={{ color: '#00a3ff', fontSize: '0.9rem' }}>{item.category}</p>
+                <p>{item.category}</p>
                 <p className="product-price">${item.price}</p>
                 
                 <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
                    <button className="btn">Details</button>
                    
-                   {/* Delete button: Logic for owner only */}
+              
                    {user && item.createdBy && (user.id === (item.createdBy._id || item.createdBy)) && (
                      <button 
                         className="btn" 
