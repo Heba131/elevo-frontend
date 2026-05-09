@@ -3,19 +3,43 @@ import axios from 'axios';
 
 const MainPage = () => {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState('none');
 
-  // Get current logged-in user from localStorage to check ownership for Delete button
   const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
+  // Handle Search and Sort whenever searchTerm, sortOrder or products change
+  useEffect(() => {
+    let result = [...products];
+
+    // 1. Filter by Search
+    if (searchTerm) {
+      result = result.filter(p => 
+        p.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // 2. Sort by Price
+    if (sortOrder === 'low') {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sortOrder === 'high') {
+      result.sort((a, b) => b.price - a.price);
+    }
+
+    setFilteredProducts(result);
+  }, [searchTerm, sortOrder, products]);
+
   const fetchProducts = async () => {
     try {
       const response = await axios.get('https://elevo-backend.onrender.com/api/products');
       setProducts(response.data);
+      setFilteredProducts(response.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -24,12 +48,11 @@ const MainPage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
-    
+    if (!window.confirm("Are you sure?")) return;
     try {
       const response = await axios.delete(`https://elevo-backend.onrender.com/api/products/${id}`);
       alert(response.data.message);
-      fetchProducts(); // Refresh list after deletion
+      fetchProducts(); 
     } catch (error) {
       alert("❌ " + (error.response?.data?.message || "Delete failed"));
     }
@@ -40,12 +63,32 @@ const MainPage = () => {
   return (
     <main className="container">
       <h1 className="page-title">Tech Store</h1>
-      
-      {products.length === 0 ? (
-        <p style={{ textAlign: 'center', color: '#666' }}>No products available yet.</p>
+
+      {/* --- Search & Sort Controls --- */}
+      <div style={{ display: 'flex', gap: '15px', marginBottom: '25px', flexWrap: 'wrap' }}>
+        <input 
+          type="text" 
+          placeholder="Search products..." 
+          className="form-control" // Use your existing CSS class
+          style={{ flex: 1, padding: '10px' }}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <select 
+          className="form-control" 
+          style={{ width: '200px', padding: '10px' }}
+          onChange={(e) => setSortOrder(e.target.value)}
+        >
+          <option value="none">Sort by Price</option>
+          <option value="low">Lowest Price First</option>
+          <option value="high">Highest Price First</option>
+        </select>
+      </div>
+
+      {filteredProducts.length === 0 ? (
+        <p style={{ textAlign: 'center', color: '#666' }}>No products found.</p>
       ) : (
         <div className="product-grid">
-          {products.map(item => (
+          {filteredProducts.map(item => (
             <div key={item._id} className="product-card">
               <img src={item.image} alt={item.name} className="product-img" />
               <div className="product-info">
@@ -56,8 +99,8 @@ const MainPage = () => {
                 <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
                    <button className="btn">Details</button>
                    
-                   {/* Delete button logic: Shows only if the logged-in user ID matches the creator ID */}
-                   {user && item.createdBy && (user.id === item.createdBy._id || user.id === item.createdBy) && (
+                   {/* Delete button: Logic for owner only */}
+                   {user && item.createdBy && (user.id === (item.createdBy._id || item.createdBy)) && (
                      <button 
                         className="btn" 
                         style={{ backgroundColor: '#ff4d4d' }} 
