@@ -82,7 +82,7 @@ body {
   text-align: center;
 }
 input, select {
-  width: 100%; padding: 12px; margin: 20px 0;
+  width: 100%; padding: 12px; margin: 20px 0 !important;
   background: #0b0e14; border: 1px solid #2d3748; color: white; border-radius: 8px;
 }
 .btn {
