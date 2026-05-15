@@ -66,14 +66,14 @@ const MainPage = () => {
       type="text" 
       placeholder="Search by name or category..." 
       onChange={(e) => setSearchTerm(e.target.value)} 
-      style={{ width: '100%', margin: 0 }}
+
     />
   
 
 
     <select 
       onChange={(e) => setSortOrder(e.target.value)}
-      style={{ width: '100%', margin: 0 }} 
+ 
     >
       <option value="none">Sort By Price</option>
       <option value="low">Price: Low to High</option>
